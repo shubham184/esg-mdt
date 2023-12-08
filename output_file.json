@@ -1,0 +1,54 @@
+{
+    "dimensions": {
+        "dimension_i": {
+            "values": [
+                "i1",
+                "i2",
+                "i3"
+            ]
+        },
+        "dimension_j": {
+            "values": [
+                "j1",
+                "j2",
+                "j3",
+                "j4"
+            ]
+        },
+        "dimension_k": {
+            "values": [
+                "k1",
+                "k2",
+                "k3"
+            ]
+        }
+    },
+    "measures": {
+        "Z": {
+            "description": "Calculate Z(i)",
+            "loop_over": "dimension_i.values",
+            "calculate": "Function or value for Z(i)"
+        },
+        "X": {
+            "description": "Calculate X(i, j, k)",
+            "loop_over": {
+                "i": "dimension_i.values",
+                "j": "dimension_j.values",
+                "k": "dimension_k.values"
+            },
+            "calculate": "Function or value for X(i, j, k)"
+        },
+        "Y": {
+            "description": "Calculate Y(i, j)",
+            "loop_over": {
+                "i": "dimension_i.values",
+                "j": "dimension_j.values"
+            },
+            "calculate": [
+                "a",
+                "<<: *measure_Z_anchor",
+                "<<: *sum_X_over_k"
+            ]
+        }
+    }
+}

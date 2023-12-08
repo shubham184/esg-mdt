@@ -1,0 +1,57 @@
+dimensions:
+  dimension_i:
+    values:
+      - i1
+      - i2
+      - i3
+  dimension_j:
+    values:
+      - j1
+      - j2
+      - j3
+      - j4
+  dimension_k:
+    values:
+      - k1
+      - k2
+      - k3
+
+constants:
+  a: "constant value for a"
+
+shared_calculations:
+  measure_Z:
+    description: "Calculate Z(i)"
+    loop_over: "dimension_i.values"
+    calculate: "Function or value for Z(i)"
+  measure_X:
+    description: "Calculate X(i, j, k)"
+    loop_over:
+      i: "dimension_i.values"
+      j: "dimension_j.values"
+      k: "dimension_k.values"
+    calculate: "Function or value for X(i, j, k)"
+  sum_X_over_k:
+    description: "Summation of X(i, j, k) for each combination of i and j over all k values"
+    loop_over:
+      i: "dimension_i.values"
+      j: "dimension_j.values"
+    calculate:
+      operation: "sum"
+      over: "dimension_k.values"
+      expression: "measure_X"  # Reference to shared calculation
+
+measures:
+  Z:
+    use_shared: "measure_Z"
+  X:
+    use_shared: "measure_X"
+  Y:
+    description: "Calculate Y(i, j)"
+    loop_over:
+      i: "dimension_i.values"
+      j: "dimension_j.values"
+    calculate:
+      - "constant value for a"
+      - "use_shared: measure_Z"(i)
+      - "use_shared: sum_X_over_k"

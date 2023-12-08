@@ -1,0 +1,34 @@
+{
+    "dimensions": {
+        "gender": {
+            "values": [
+                "male",
+                "female",
+                "other",
+                "not_disclosed"
+            ]
+        }
+    },
+    "measures": {
+        "total_employees_per_gender": {
+            "description": "Total number of employees at top management level for a specific gender",
+            "loop_over": "gender.values",
+            "calculate": {
+                "operation": "count",
+                "condition": "where employee's gender is equal to the current_gender"
+            }
+        },
+        "percentage_employees_per_gender": {
+            "description": "Percentage of employees at top management level for each gender",
+            "loop_over": "gender.values",
+            "calculate": {
+                "operation": "divide",
+                "numerator": "total_employees_at_top_management[current_gender]",
+                "denominator": "sum_of_all_genders"
+            },
+            "dependencies": [
+                "total_employees_per_gender"
+            ]
+        }
+    }
+}
